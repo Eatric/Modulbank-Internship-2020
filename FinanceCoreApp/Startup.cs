@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using FinanceCoreApp.BusinessLogic;
-using FinanceCoreApp.Services;
-using FinanceCoreApp.Services.Interfaces;
+using FinanceApp.Core.BusinessLogic;
+using FinanceApp.Core.Configurations;
+using FinanceApp.Core.Services;
+using FinanceApp.Core.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -12,8 +15,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
-namespace FinanceCoreApp
+namespace FinanceApp.Core
 {
 	public class Startup
 	{
@@ -30,7 +34,30 @@ namespace FinanceCoreApp
 			services.AddControllers();
 
 			services.AddScoped<GetUsersInfoRequestHandler>();
-			services.AddScoped<IUserInfoService, UserInfoService>();
+			services.AddScoped<IUserAuthService, UserAuthService>();
+
+			services.Configure<AuthOptions>(Configuration.GetSection("AuthOptions"));
+			services.Configure<DatabaseOptions>(Configuration.GetSection("ConnectionStrings"));
+
+			var authOptions = Configuration.GetSection("AuthOptions").Get<AuthOptions>();
+
+			services.AddAuthentication(options =>
+			{
+				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			}).AddJwtBearer(options =>
+			{
+				options.TokenValidationParameters = new TokenValidationParameters
+				{
+					ValidateIssuer = true,
+					ValidateAudience = true,
+					ValidateLifetime = true,
+					RequireExpirationTime = true,
+					ValidIssuer = authOptions.Issuer,
+					ValidAudience = authOptions.Audience,
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authOptions.SecureKey))
+				};
+			});
 
 			services.AddUserInfoService();
 

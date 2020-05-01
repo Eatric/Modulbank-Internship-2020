@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using FinanceCoreApp.Models;
+using FinanceApp.Auth;
 
-namespace FinanceCoreApp.Services.Interfaces
+namespace FinanceApp.Core.Services.Interfaces
 {
-	public interface IUserInfoService
+	public interface IUserAuthService
 	{
 		Task<User> GetById(Guid id);
 		Task<User> GetByEmail(string email);

@@ -1,6 +1,6 @@
 using System;
 
-namespace FinanceCoreApp
+namespace FinanceApp.Core
 {
 	public class WeatherForecast
 	{

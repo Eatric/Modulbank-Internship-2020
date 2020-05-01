@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FinanceCoreApp.Models;
-using FinanceCoreApp.Services.Interfaces;
+using FinanceApp.Auth;
+using FinanceApp.Core.Services.Interfaces;
 
-namespace FinanceCoreApp.BusinessLogic
+namespace FinanceApp.Core.BusinessLogic
 {
 	public class GetUsersInfoRequestHandler
 	{

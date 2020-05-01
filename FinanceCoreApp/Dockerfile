@@ -6,16 +6,16 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["FinanceCoreApp.csproj", ""]
-RUN dotnet restore "./FinanceCoreApp.csproj"
+COPY ["FinanceApp.Core.csproj", ""]
+RUN dotnet restore "./FinanceApp.Core.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "FinanceCoreApp.csproj" -c Release -o /app/build
+RUN dotnet build "FinanceApp.Core.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "FinanceCoreApp.csproj" -c Release -o /app/publish
+RUN dotnet publish "FinanceApp.Core.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "FinanceCoreApp.dll"]
+ENTRYPOINT ["dotnet", "FinanceApp.Core.dll"]

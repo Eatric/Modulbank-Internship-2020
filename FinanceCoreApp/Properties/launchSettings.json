@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "FinanceCoreApp": {
+    "FinanceApp.Core": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",

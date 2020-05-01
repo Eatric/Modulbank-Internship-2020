@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FinanceCoreApp.BusinessLogic;
-using FinanceCoreApp.Models;
-using Microsoft.AspNetCore.Http;
+using FinanceApp.Auth;
+using FinanceApp.Core.BusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinanceCoreApp.Controllers
+namespace FinanceApp.Core.Controllers
 {
     [Route("api/users")]
     [ApiController]
@@ -24,6 +23,12 @@ namespace FinanceCoreApp.Controllers
 	    public Task<User> GetUserInfo(Guid id)
 	    {
 		    return _getUsersInfoRequestHandler.Handle(id);
+	    }
+
+	    [HttpPut]
+	    public IActionResult Register([FromBody] UserCredentials user)
+	    {
+		    return Ok();
 	    }
     }
 }
