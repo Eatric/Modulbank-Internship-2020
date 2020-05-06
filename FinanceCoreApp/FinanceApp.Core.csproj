@@ -16,8 +16,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FinanceApp.Auth\FinanceApp.Auth.csproj" />
-    <ProjectReference Include="..\FinanceApp.Configurations\FinanceApp.Configurations.csproj" />
+    <ProjectReference Include="..\FinanceApp.BusinessLogic\FinanceApp.BusinessLogic.csproj" />
+    <ProjectReference Include="..\FinanceApp.Database\FinanceApp.Database.csproj" />
+    <ProjectReference Include="..\FinanceApp.Models\FinanceApp.Models.csproj" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 
 </Project>

@@ -1,5 +1,5 @@
 ﻿
-namespace FinanceApp.Core.Configurations
+namespace FinanceApp.Auth
 {
 	public class AuthOptions
 	{

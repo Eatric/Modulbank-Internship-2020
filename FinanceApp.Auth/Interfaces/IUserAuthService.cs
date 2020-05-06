@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using FinanceApp.Auth;
+using FinanceApp.Models;
 
-namespace FinanceApp.Core.Services.Interfaces
+namespace FinanceApp.Auth.Interfaces
 {
-	public interface IUserAuthService
+	public interface IAuthService
 	{
-		Task<User> GetById(Guid id);
-		Task<User> GetByEmail(string email);
 		bool IsValidUser(string email, string password);
 	}
 }

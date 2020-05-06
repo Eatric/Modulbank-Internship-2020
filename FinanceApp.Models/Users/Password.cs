@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FinanceApp.Auth
+namespace FinanceApp.Models.Users
 {
 	public class Password
 	{
@@ -22,7 +22,7 @@ namespace FinanceApp.Auth
 		public static bool CheckPassword(string password, string salt, string hash)
 		{
 			var passwordHash = ComputePasswordHash(string.Concat(password, salt));
-			Console.WriteLine(passwordHash);
+
 			return string.Equals(hash, passwordHash);
 		}
 

@@ -1,4 +1,4 @@
-﻿namespace FinanceApp.Core.Configurations
+﻿namespace FinanceApp.Database
 {
 	public class DatabaseOptions
 	{

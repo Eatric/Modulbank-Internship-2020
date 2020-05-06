@@ -1,6 +1,7 @@
 ﻿using System;
+using FinanceApp.Models.Users;
 
-namespace FinanceApp.Auth
+namespace FinanceApp.Models.Users
 {
 	public class User
 	{
@@ -8,10 +9,9 @@ namespace FinanceApp.Auth
 		public string Name { get; set; }
 		public string Email { get; set; }
 		public string Photo { get; set; }
-		public bool IsModerated { get; set; }
 		public string Password { get; set; }
 		public string Salt { get; set; }
-		public DateTime CreateDate { get; set; }
+		public EUserStatus Status { get; set; }
 
 		public User(string name, string email, string password)
 		{
@@ -22,11 +22,10 @@ namespace FinanceApp.Auth
 			Password = pass.PasswordHash;
 			Salt = pass.Salt;
 			Photo = string.Empty;
-			IsModerated = false;
+			Status = EUserStatus.Moderate;
 		}
 
-		public User(Guid Id, string Name, string Email, string Password, string Salt, string Photo, bool IsModerated,
-			DateTime CreateDate)
+		public User(Guid Id, string Name, string Email, string Password, string Salt, string Photo, short Status)
 		{
 			this.Id = Id;
 			this.Name = Name;
@@ -34,8 +33,7 @@ namespace FinanceApp.Auth
 			this.Password = Password;
 			this.Salt = Salt;
 			this.Photo = Photo;
-			this.IsModerated = IsModerated;
-			this.CreateDate = CreateDate;
+			this.Status = (EUserStatus)Status;
 		}
 	}
 }

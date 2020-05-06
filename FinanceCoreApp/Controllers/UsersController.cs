@@ -1,34 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using FinanceApp.Auth;
-using FinanceApp.Core.BusinessLogic;
+using FinanceApp.BusinessLogic.Users;
+using FinanceApp.Models.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApp.Core.Controllers
 {
-    [Route("api/users")]
+	[Route("api/users")]
     [ApiController]
     public class UsersController : ControllerBase
     {
-	    private readonly GetUsersInfoRequestHandler _getUsersInfoRequestHandler;
+	    private readonly UsersRequestHandler _usersRequestHandler;
 
-	    public UsersController(GetUsersInfoRequestHandler getUsersInfoRequestHandler)
+	    public UsersController(UsersRequestHandler getUsersInfoRequestHandler)
 	    {
-		    _getUsersInfoRequestHandler = getUsersInfoRequestHandler;
+		    _usersRequestHandler = getUsersInfoRequestHandler;
 	    }
 
+		[Authorize]
 	    [HttpGet]
-	    public Task<User> GetUserInfo(Guid id)
+	    public async Task<User> GetUserInfo(Guid id)
 	    {
-		    return _getUsersInfoRequestHandler.Handle(id);
+		    return await _usersRequestHandler.GetUser(id);
 	    }
 
 	    [HttpPut]
-	    public IActionResult Register([FromBody] UserCredentials user)
+	    public async Task<ActionResult<User>> Register([FromBody] UserRegisterCredentials user)
 	    {
-		    return Ok();
+		    if (!string.Equals(user.Password, user.RepeatedPassword))
+		    {
+			    ModelState.AddModelError("Password", "Пароли не совпадают.");
+		    }
+
+		    if (!ModelState.IsValid)
+		    {
+			    return BadRequest(ModelState);
+		    }
+
+		    return Ok(await _usersRequestHandler.Register(user));
 	    }
     }
 }

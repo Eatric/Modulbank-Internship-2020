@@ -1,6 +1,5 @@
 bin/
 obj/
-.vs/
-*.sln   
+.vs/ 
 *.user
 _ReSharper.Caches/

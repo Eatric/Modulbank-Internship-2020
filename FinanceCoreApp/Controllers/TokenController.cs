@@ -3,8 +3,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using FinanceApp.Auth;
-using FinanceApp.Core.Configurations;
-using FinanceApp.Core.Services.Interfaces;
+using FinanceApp.Auth.Interfaces;
+using FinanceApp.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -15,19 +15,19 @@ namespace FinanceApp.Core.Controllers
     [ApiController]
     public class TokenController : ControllerBase
     {
-	    private IUserInfoService _userInfoService;
-	    private AuthOptions _authOptions;
+	    private readonly IAuthService _authService;
+	    private readonly AuthOptions _authOptions;
 
-	    public TokenController(IUserInfoService userInfoService, IOptions<AuthOptions> authOptions)
+	    public TokenController(IAuthService authService, IOptions<AuthOptions> authOptions)
 	    {
-		    _userInfoService = userInfoService;
+		    _authService = authService;
 		    _authOptions = authOptions.Value;
 	    }
 
 	    [HttpPost]
 	    public IActionResult Get([FromBody] UserCredentials user)
 	    {
-		    if (_userInfoService.IsValidUser(user.Email, user.Password))
+		    if (_authService.IsValidUser(user.Email, user.Password))
 		    {
 			    var authClaims = new[]
 			    {
