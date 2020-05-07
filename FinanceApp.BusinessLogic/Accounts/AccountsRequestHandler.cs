@@ -21,6 +21,14 @@ namespace FinanceApp.BusinessLogic.Accounts
 			_usersRepository = usersRepository;
 		}
 
+		public async Task<bool> AddMoney(string number, string email, decimal amount)
+		{
+			var account = await GetAccount(number, email);
+
+			account.Balance += amount;
+			return await _accountsRepository.Update(account);
+		}
+
 		public async Task<IEnumerable<Account>> GetAccountsOfUser(Guid id)
 		{
 			return await _accountsRepository.Read(id);
