@@ -37,6 +37,15 @@ namespace FinanceApp.Core.Controllers
 		}
 
 		[HttpPost]
+		[Route("add/{number:maxlength(10)}/{amount:decimal}")]
+		public async Task<IActionResult> AddMoney(string number, decimal amount)
+		{
+			var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+
+			return Ok(await _accountsRequestHandler.AddMoney(number, userEmail, amount));
+		}
+
+		[HttpPost]
 		public async Task<IActionResult> Transfer([FromBody] TransferCredentials transfer)
 		{
 			var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
