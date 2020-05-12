@@ -1,0 +1,66 @@
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using FinanceApp.Auth;
+using FinanceApp.Auth.Interfaces;
+using FinanceApp.Models.Users;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+
+namespace FinanceApp.Core.Controllers
+{
+	[Route("api/[controller]")]
+	[Produces("application/json")]
+    [ApiController]
+    public class TokenController : ControllerBase
+    {
+	    private readonly IAuthService _authService;
+	    private readonly AuthOptions _authOptions;
+
+	    public TokenController(IAuthService authService, IOptions<AuthOptions> authOptions)
+	    {
+		    _authService = authService;
+		    _authOptions = authOptions.Value;
+	    }
+
+		/// <summary>
+		/// Генерация JWT токена для конкретного пользователя
+		/// </summary>
+		/// <param name="user">Данные об аккаунте</param>
+		/// <returns>Token</returns>
+	    [HttpPost]
+	    public IActionResult Get([FromBody] UserCredentials user)
+	    {
+		    if (_authService.IsValidUser(user.Email, user.Password))
+		    {
+			    var authClaims = new[]
+			    {
+				    new Claim(JwtRegisteredClaimNames.Email, user.Email),
+					new Claim(JwtRegisteredClaimNames.NameId, _authService.GetGuidOfUser(user.Email).ToString()),
+				    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+			    };
+
+				var token = new JwtSecurityToken(
+					issuer: _authOptions.Issuer,
+					audience: _authOptions.Audience,
+					expires: DateTime.Now.AddMinutes(_authOptions.ExpiresInMinutes),
+					claims: authClaims,
+					signingCredentials: new SigningCredentials(
+						new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authOptions.SecureKey)),
+						SecurityAlgorithms.HmacSha256Signature)
+					);
+
+				return Ok(new
+				{
+					token = new JwtSecurityTokenHandler().WriteToken(token),
+					expiration = token.ValidTo
+				});
+		    }
+
+		    return Unauthorized();
+	    }
+    }
+}
