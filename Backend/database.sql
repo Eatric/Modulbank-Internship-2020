@@ -5,7 +5,7 @@
 -- Dumped from database version 12.2
 -- Dumped by pg_dump version 12.2
 
--- Started on 2020-05-06 23:38:44
+-- Started on 2020-05-12 16:52:50
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -18,8 +18,9 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+DROP DATABASE financeapp;
 --
--- TOC entry 2847 (class 1262 OID 16393)
+-- TOC entry 2846 (class 1262 OID 16393)
 -- Name: financeapp; Type: DATABASE; Schema: -; Owner: postgres
 --
 
@@ -41,16 +42,6 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- TOC entry 3 (class 2615 OID 2200)
--- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
---
-
-CREATE SCHEMA public;
-
-
-ALTER SCHEMA public OWNER TO postgres;
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -71,7 +62,7 @@ CREATE TABLE public."Accounts" (
 ALTER TABLE public."Accounts" OWNER TO postgres;
 
 --
--- TOC entry 205 (class 1259 OID 24674)
+-- TOC entry 204 (class 1259 OID 24674)
 -- Name: Transactions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -80,35 +71,28 @@ CREATE TABLE public."Transactions" (
     "FromAccount" character(10) DEFAULT '0'::bpchar NOT NULL,
     "ToAccount" character(10) DEFAULT '0'::bpchar NOT NULL,
     "Amount" money DEFAULT 0 NOT NULL,
-    "When" timestamp without time zone DEFAULT now() NOT NULL
+    "When" timestamp without time zone NOT NULL,
+    "Type" smallint DEFAULT '0'::smallint NOT NULL
 );
 
 
 ALTER TABLE public."Transactions" OWNER TO postgres;
 
 --
--- TOC entry 204 (class 1259 OID 24672)
--- Name: Transactions_Id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 205 (class 1259 OID 24688)
+-- Name: TransactionsAutoIncrement; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public."Transactions_Id_seq"
+CREATE SEQUENCE public."TransactionsAutoIncrement"
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
-    CACHE 1;
+    CACHE 1
+    CYCLE;
 
 
-ALTER TABLE public."Transactions_Id_seq" OWNER TO postgres;
-
---
--- TOC entry 2848 (class 0 OID 0)
--- Dependencies: 204
--- Name: Transactions_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public."Transactions_Id_seq" OWNED BY public."Transactions"."Id";
-
+ALTER TABLE public."TransactionsAutoIncrement" OWNER TO postgres;
 
 --
 -- TOC entry 202 (class 1259 OID 24589)
@@ -129,33 +113,31 @@ CREATE TABLE public."Users" (
 ALTER TABLE public."Users" OWNER TO postgres;
 
 --
--- TOC entry 2700 (class 2604 OID 24677)
--- Name: Transactions Id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."Transactions" ALTER COLUMN "Id" SET DEFAULT nextval('public."Transactions_Id_seq"'::regclass);
-
-
---
--- TOC entry 2839 (class 0 OID 24650)
+-- TOC entry 2838 (class 0 OID 24650)
 -- Dependencies: 203
 -- Data for Name: Accounts; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public."Accounts" ("Number", "Balance", "Status", "Owner") VALUES ('4294562741', '0,00 ?', 0, 'c0126b81-2802-4a8a-85d4-aff7e896db32');
-INSERT INTO public."Accounts" ("Number", "Balance", "Status", "Owner") VALUES ('4123456789', '100,50 ?', 0, '08960050-3365-439d-9d33-e2ba3fa5a669');
+INSERT INTO public."Accounts" ("Number", "Balance", "Status", "Owner") VALUES ('4294562741', '181,00 ?', 0, 'c0126b81-2802-4a8a-85d4-aff7e896db32');
+INSERT INTO public."Accounts" ("Number", "Balance", "Status", "Owner") VALUES ('4123456789', '120,50 ?', 0, '08960050-3365-439d-9d33-e2ba3fa5a669');
 
 
 --
--- TOC entry 2841 (class 0 OID 24674)
--- Dependencies: 205
+-- TOC entry 2839 (class 0 OID 24674)
+-- Dependencies: 204
 -- Data for Name: Transactions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public."Transactions" ("Id", "FromAccount", "ToAccount", "Amount", "When", "Type") VALUES (1, '1         ', '0         ', '0,00 ?', '2020-05-08 08:00:36.85763', 0);
+INSERT INTO public."Transactions" ("Id", "FromAccount", "ToAccount", "Amount", "When", "Type") VALUES (2, '2         ', '0         ', '0,00 ?', '2020-05-08 08:00:42.475828', 0);
+INSERT INTO public."Transactions" ("Id", "FromAccount", "ToAccount", "Amount", "When", "Type") VALUES (3, '1         ', '0         ', '0,00 ?', '2020-05-08 08:05:27.559732', 0);
+INSERT INTO public."Transactions" ("Id", "FromAccount", "ToAccount", "Amount", "When", "Type") VALUES (7, '2         ', '0         ', '0,00 ?', '2020-05-08 08:05:27.559732', 0);
+INSERT INTO public."Transactions" ("Id", "FromAccount", "ToAccount", "Amount", "When", "Type") VALUES (14, '1         ', '2         ', '0,00 ?', '2020-05-09 16:32:52', 0);
+INSERT INTO public."Transactions" ("Id", "FromAccount", "ToAccount", "Amount", "When", "Type") VALUES (20, '4294562741', '4123456789', '10,00 ?', '2020-05-09 16:35:15.637717', 0);
 
 
 --
--- TOC entry 2838 (class 0 OID 24589)
+-- TOC entry 2837 (class 0 OID 24589)
 -- Dependencies: 202
 -- Data for Name: Users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -166,16 +148,16 @@ INSERT INTO public."Users" ("Id", "Name", "Email", "Password", "Salt", "Photo", 
 
 
 --
--- TOC entry 2849 (class 0 OID 0)
--- Dependencies: 204
--- Name: Transactions_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- TOC entry 2847 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: TransactionsAutoIncrement; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Transactions_Id_seq"', 1, false);
+SELECT pg_catalog.setval('public."TransactionsAutoIncrement"', 20, true);
 
 
 --
--- TOC entry 2708 (class 2606 OID 24665)
+-- TOC entry 2707 (class 2606 OID 24665)
 -- Name: Accounts Accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -184,7 +166,7 @@ ALTER TABLE ONLY public."Accounts"
 
 
 --
--- TOC entry 2710 (class 2606 OID 24683)
+-- TOC entry 2709 (class 2606 OID 24702)
 -- Name: Transactions Transactions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -193,7 +175,7 @@ ALTER TABLE ONLY public."Transactions"
 
 
 --
--- TOC entry 2706 (class 2606 OID 24595)
+-- TOC entry 2705 (class 2606 OID 24595)
 -- Name: Users Users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -202,7 +184,7 @@ ALTER TABLE ONLY public."Users"
 
 
 --
--- TOC entry 2711 (class 2606 OID 24658)
+-- TOC entry 2710 (class 2606 OID 24658)
 -- Name: Accounts FK_Accounts_Users; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -210,7 +192,7 @@ ALTER TABLE ONLY public."Accounts"
     ADD CONSTRAINT "FK_Accounts_Users" FOREIGN KEY ("Owner") REFERENCES public."Users"("Id");
 
 
--- Completed on 2020-05-06 23:38:45
+-- Completed on 2020-05-12 16:52:51
 
 --
 -- PostgreSQL database dump complete
