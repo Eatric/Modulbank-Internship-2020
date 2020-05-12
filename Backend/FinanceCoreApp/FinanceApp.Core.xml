@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FinanceApp.Core</name>
+    </assembly>
+    <members>
+        <member name="M:FinanceApp.Core.Controllers.AccountsController.GetAccountInfo(System.String)">
+            <summary>
+            Получение полной информации о счёте по его номеру
+            </summary>
+            <param name="number">Номер счёта</param>
+            <returns>Model of specific account</returns>
+        </member>
+        <member name="M:FinanceApp.Core.Controllers.AccountsController.GetAllAccountsForCurrentUser">
+            <summary>
+            Получение списка всех счетов для данного аккаунта
+            </summary>
+            <returns>List Of Accounts</returns>
+        </member>
+        <member name="M:FinanceApp.Core.Controllers.AccountsController.RegisterNewAccount">
+            <summary>
+            Регистрация нового счёта для данного аккаунта
+            </summary>
+            <returns>Model of Account</returns>
+        </member>
+        <member name="M:FinanceApp.Core.Controllers.AccountsController.AddMoney(System.String,System.Decimal)">
+            <summary>
+            Пополенение счёта данного аккаунта
+            </summary>
+            <param name="number">Номер счёта</param>
+            <param name="amount">Сумма пополнения</param>
+            <returns></returns>
+        </member>
+        <member name="M:FinanceApp.Core.Controllers.AccountsController.Transfer(FinanceApp.Models.Accounts.TransferCredentials)">
+            <summary>
+            Перевод денег между счетами
+            </summary>
+            <param name="transfer">Данные перевода</param>
+            <returns></returns>
+        </member>
+        <member name="M:FinanceApp.Core.Controllers.TokenController.Get(FinanceApp.Models.Users.UserCredentials)">
+            <summary>
+            Генерация JWT токена для конкретного пользователя
+            </summary>
+            <param name="user">Данные об аккаунте</param>
+            <returns>Token</returns>
+        </member>
+        <member name="M:FinanceApp.Core.Controllers.UsersController.GetUserInfo(System.Guid)">
+            <summary>
+            Получение информации о пользователе
+            </summary>
+            <param name="id">Id пользователя</param>
+            <returns>Model Of User</returns>
+        </member>
+        <member name="M:FinanceApp.Core.Controllers.UsersController.Register(FinanceApp.Models.Users.UserRegisterCredentials)">
+            <summary>
+            Регистрация нового пользователя
+            </summary>
+            <param name="user">Данные для регистрации</param>
+            <returns>Model Of User</returns>
+        </member>
+    </members>
+</doc>

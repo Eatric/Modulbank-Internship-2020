@@ -3,3 +3,4 @@ obj/
 .vs/ 
 *.user
 _ReSharper.Caches/
+Frontend/node_modules/
