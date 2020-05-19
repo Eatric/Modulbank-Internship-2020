@@ -1,7 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import Router from "react-router-dom";
+import ReactDOM from 'react-dom';
+import React from 'react';
 
-import App from "./components/App.js";
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-ReactDOM.render(<App />, document.getElementById("root"));
+import Auth from './components/SignIn/SignIn.js';
+import NotFound from './components/NotFound/NotFound.js';
+import Register from './components/SignUp/SignUp.js';
+
+ReactDOM.render(
+    <Router>
+        <Switch>
+            <Route exact path="/signin" component={Auth} />
+            <Route exact path="/signup" component={Register} />
+            <Route component={NotFound} />
+        </Switch>
+    </Router>,
+    document.getElementById("root")
+)
